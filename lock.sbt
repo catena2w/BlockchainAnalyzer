@@ -3,17 +3,17 @@
 // https://github.com/tkawachi/sbt-lock/
 dependencyOverrides in ThisBuild ++= Set(
   "com.google.code.findbugs" % "jsr305" % "2.0.1",
-  "com.google.guava" % "guava" % "18.0",
-  "com.google.protobuf" % "protobuf-java" % "2.6.1",
+  "com.google.guava" % "guava" % "16.0.1",
+  "com.google.protobuf" % "protobuf-java" % "2.5.0",
   "com.lambdaworks" % "scrypt" % "1.4.0",
   "com.madgag.spongycastle" % "core" % "1.51.0.0",
-  "com.squareup.okhttp" % "okhttp" % "2.7.2",
-  "com.squareup.okio" % "okio" % "1.6.0",
+  "com.squareup.okhttp" % "okhttp" % "2.2.0",
+  "com.squareup.okio" % "okio" % "1.2.0",
   "net.jcip" % "jcip-annotations" % "1.0",
   "org.apache.commons" % "commons-math3" % "3.6.1",
-  "org.bitcoinj" % "bitcoinj-core" % "0.14.4",
-  "org.bitcoinj" % "orchid" % "1.2.1",
+  "org.bitcoinj" % "bitcoinj-core" % "0.13.6",
+  "org.bitcoinj" % "orchid" % "1.1.1",
   "org.mapdb" % "mapdb" % "2.0-beta13",
-  "org.slf4j" % "slf4j-api" % "1.7.20"
+  "org.slf4j" % "slf4j-api" % "1.7.7"
 )
-// LIBRARY_DEPENDENCIES_HASH 0a20c467abe82b85a356bf7a7171699cb30ef2a9
+// LIBRARY_DEPENDENCIES_HASH 3fccb8ed86a0cb71289b1b07c58ad08b22bab854
