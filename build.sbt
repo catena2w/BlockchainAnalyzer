@@ -3,7 +3,7 @@ name := "BlockAnalyzer"
 
 version := "1.0"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.12.2"
 
 libraryDependencies ++= Seq(
   "org.bitcoinj" % "bitcoinj-core" % "0.+",
