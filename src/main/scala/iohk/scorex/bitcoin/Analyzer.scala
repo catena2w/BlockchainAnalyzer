@@ -151,8 +151,13 @@ object Analyzer extends App {
       println(h)
       (0 until RetargetTimestamp).foreach { i =>
         val current = diffs(i)
-        val diff: Long = (timestamp.get(h + i + 1) - timestamp.get(h + i))
-        if (diff < 0) println(s"WARN: ${h + i}=>$diff")
+        val diff: Long = if(Option(timestamp.get(h + i + 1)).isEmpty || Option(timestamp.get(h + i)).isEmpty) {
+          0
+        } else {
+          (timestamp.get(h + i + 1) - timestamp.get(h + i))
+        }
+        if (diff < 0) println(s"WARN: ${h + i}=>$diff,${timestamp.get(h + i + 1)},${timestamp.get(h + i)}")
+        assert(diff >= -(2 * 60 * 60), "Bitcoin requires diff less then 2 hours")
         diffs = diffs.updated(i, diff + current)
       }
     }
@@ -163,6 +168,7 @@ object Analyzer extends App {
     bw.close()
     val mean: Long = meanIntervals.sum / meanIntervals.size
     println(s"Mean = $mean")
+    println(s"Mean from explorer = 564")
   }
 
   def recoverChain(): Unit = {
