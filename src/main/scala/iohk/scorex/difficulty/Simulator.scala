@@ -45,7 +45,7 @@ object Simulator extends App {
       val file = new File(s"data/$diffControlString/$hashRateString.csv")
       new File(s"data/$diffControlString").mkdirs()
       val bw = new BufferedWriter(new FileWriter(file))
-      bw.write("Height,Difficulty,HashRate,RealDuration\n")
+      bw.write("Epoch,CalculatedHashRate,RealHashRate,RealDuration\n")
       res.foreach(r => bw.write(r._1 + "," + r._2 + "," + r._3 + "," + r._4.toMillis + "\n"))
       bw.write((res.map(_._4.toMillis).sum / res.length) + "\n")
       bw.close()

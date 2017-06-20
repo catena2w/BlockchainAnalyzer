@@ -1,4 +1,4 @@
-Height,Difficulty,HashRate,RealDuration
+Epoch,CalculatedHashRate,RealHashRate,RealDuration
 0,1000,1000,600000
 1,1000,1100,545454
 2,1100,1210,545454
