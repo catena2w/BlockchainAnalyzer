@@ -4,7 +4,7 @@ import java.io.{BufferedWriter, File, FileWriter}
 
 import scala.BigInt._
 import scala.concurrent.duration.{FiniteDuration, _}
-import scala.util.{Random, Try}
+import scala.util.Random
 
 object Simulator extends App {
 
@@ -18,8 +18,8 @@ object Simulator extends App {
   val Blocks = 1000
 
 
-  Seq("linear", "bitcoin").foreach{ diffControlString =>
-    Seq("constant", "exponent", "linear", "attack", "random").foreach { hashRateString =>
+  Seq("linear", "bitcoin").foreach { diffControlString =>
+    Seq("exponent", "linear", "attack").foreach { hashRateString =>
       val diffControl = diffControlString match {
         case "linear" => new LinearDifficultyControl
         case "bitcoin" => new BitcoinDifficultyControl
@@ -42,10 +42,11 @@ object Simulator extends App {
       } else acc
 
       val res = simulate(1, Seq((0, BigInt(Blocks), BigInt(Blocks), Desired)), Blocks).reverse
-      val file = new File(s"data/$diffControlString/$hashRateString.txt")
+      val file = new File(s"data/$diffControlString/$hashRateString.csv")
       new File(s"data/$diffControlString").mkdirs()
       val bw = new BufferedWriter(new FileWriter(file))
-      res.foreach(r => bw.write(r._1 + " " + r._2 + " " + r._3 + " " + r._4.toMillis + "\n"))
+      bw.write("Height,Difficulty,HashRate,RealDuration\n")
+      res.foreach(r => bw.write(r._1 + "," + r._2 + "," + r._3 + "," + r._4.toMillis + "\n"))
       bw.write((res.map(_._4.toMillis).sum / res.length) + "\n")
       bw.close()
 
