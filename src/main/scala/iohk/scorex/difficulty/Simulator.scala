@@ -41,12 +41,16 @@ object Simulator extends App {
         simulate(i + 1, (i, newDiff, R, realDuration) +: acc, maxI)
       } else acc
 
-      val res = simulate(1, Seq((0, BigInt(Blocks), BigInt(Blocks), Desired)), Blocks).reverse
+      val res = simulate(1, Seq((0, BigInt(R), BigInt(R), Desired)), Blocks).reverse
       val file = new File(s"data/$diffControlString/$hashRateString.csv")
       new File(s"data/$diffControlString").mkdirs()
       val bw = new BufferedWriter(new FileWriter(file))
       bw.write("Epoch,CalculatedHashRate,RealHashRate,RealDuration\n")
-      res.foreach(r => bw.write(r._1 + "," + r._2 + "," + r._3 + "," + r._4.toMillis + "\n"))
+//      println("Epoch,CalculatedHashRate,RealHashRate,RealDuration")
+      res.foreach { r =>
+//        println(r._1 + "," + r._2 + "," + r._3 + "," + r._4.toMillis)
+        bw.write(r._1 + "," + r._2 + "," + r._3 + "," + r._4.toMillis + "\n")
+      }
       bw.write((res.map(_._4.toMillis).sum / res.length) + "\n")
       bw.close()
 
