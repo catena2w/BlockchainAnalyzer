@@ -16,13 +16,13 @@ object Simulator extends App {
   val Desired = 10.minutes
   val R = 1000
   val Ra = 200
-  val Epochs = 202
 
   lazy val lines: Seq[String] = Source.fromFile(s"difficulties.txt").getLines().toList
   lazy val targets: IndexedSeq[BigInt] = lines.map(_.split(" ")).map(l => BigInt(l.last)).toIndexedSeq
-  lazy val bitcoinDiffficulties: IndexedSeq[BigInt] = targets.map(t => BigInt("26959535291011309493156476344723991336010898738574164086137773096960") / t)
+  lazy val bitcoinDiffficulties: IndexedSeq[BigInt] = targets.map(t => targets(0) / t)
+  val Epochs = bitcoinDiffficulties.length
 
-  println(bitcoinDiffficulties)
+//  println(bitcoinDiffficulties)
 
   Seq("linear", "bitcoin").foreach { diffControlString =>
     Seq("exponent", "linear", "attack", "real").foreach { hashRateString =>
