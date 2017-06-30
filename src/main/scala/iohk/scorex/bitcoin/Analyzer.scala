@@ -4,10 +4,8 @@ import java.io.{BufferedWriter, File, FileWriter}
 import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.security.SecureRandom
-import java.util
 
 import org.apache.commons.math3.stat.inference.ChiSquareTest
-import org.bitcoinj.core.AbstractBlockChain.NewBlockType
 import org.bitcoinj.core._
 import org.bitcoinj.net.discovery.DnsDiscovery
 import org.bitcoinj.params.MainNetParams
@@ -151,7 +149,8 @@ object Analyzer extends App {
       println(h)
       (0 until RetargetTimestamp).foreach { i =>
         val current = diffs(i)
-        val diff: Long = if(Option(timestamp.get(h + i + 1)).isEmpty || Option(timestamp.get(h + i)).isEmpty) {
+        val diff: Long = if (Option(timestamp.get(h + i + 1)).isEmpty || Option(timestamp.get(h + i)).isEmpty) {
+          println(s"WARN: undefined interval at $h")
           0
         } else {
           (timestamp.get(h + i + 1) - timestamp.get(h + i))
@@ -161,6 +160,15 @@ object Analyzer extends App {
         diffs = diffs.updated(i, diff + current)
       }
     }
+    val intervals = (1 to MaxHeight).map { h =>
+     if (Option(timestamp.get(h + 1)).isEmpty || Option(timestamp.get(h)).isEmpty) {
+        0
+      } else {
+        timestamp.get(h + 1) - timestamp.get(h)
+      }
+    }
+    val mean2 = intervals.sum / intervals.length
+
     val meanIntervals: Seq[Long] = diffs.map(_ / heights.size)
     val file = new File("intervals.txt")
     val bw = new BufferedWriter(new FileWriter(file))
@@ -168,6 +176,7 @@ object Analyzer extends App {
     bw.close()
     val mean: Long = meanIntervals.sum / meanIntervals.size
     println(s"Mean = $mean")
+    println(s"Mean2 = $mean2")
     println(s"Mean from explorer = 564")
   }
 
