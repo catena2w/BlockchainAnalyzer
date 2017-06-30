@@ -4,13 +4,13 @@ import iohk.scorex.difficulty.Simulator.Difficulty
 
 import scala.concurrent.duration.FiniteDuration
 
-class LinearDifficultyControl extends DifficultyControl {
+class LinearDifficultyControl(useLastEpochs: Int = 4) extends DifficultyControl {
 
   override def diff(lastDiffs: Seq[(Difficulty, FiniteDuration)], desired: FiniteDuration): BigInt = {
     if (lastDiffs.size >= 2) {
       val realDiffs: Seq[BigInt] = lastDiffs.reverse.map(l => l._1 * desired.toMillis / l._2.toMillis).toSeq
       val data: Seq[(Int, Difficulty)] = realDiffs.indices.map(i => i -> realDiffs(i))
-      interpolate(data.takeRight(4))(data.map(_._1).max + 1)
+      interpolate(data.takeRight(useLastEpochs))(data.map(_._1).max + 1)
     } else lastDiffs.last._1
   }
 
