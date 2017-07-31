@@ -14,12 +14,8 @@ class LinearDifficultyControl(useLastEpochs: Int = 4) extends DifficultyControl 
 
       val i: Int = D.keys.max + 1
       val N: Int = useLastEpochs
-      val xMean: BigDecimal = BigDecimal(2 * i - N - 1) / 2
-      val yMean = (((i - N) until i) map (n => D(n))).sum / N
-      val xyMean = (((i - N) until i) map (n => D(n) * n)).sum / N
-      val x2Mean = (((i - N) until i) map (n => BigDecimal(n) * n)).sum / N
-      val k: BigDecimal = (xyMean - xMean * yMean) / (x2Mean - xMean * xMean)
-      val b: BigDecimal = yMean - k * xMean
+      val k: BigDecimal = (4 * (((i - N) until i) map (n => D(n) * n)).sum - 2 * (((i - N) until i) map (n => D(n))).sum * BigDecimal(2 * i - N - 1)) / (4 * (((i - N) until i) map (n => BigDecimal(n) * n)).sum - N * BigDecimal(2 * i - N - 1) * BigDecimal(2 * i - N - 1))
+      val b: BigDecimal = (2 * (((i - N) until i) map (n => D(n))).sum - N * k * BigDecimal(2 * i - N - 1)) / (2 * N)
       (k * i + b).toBigInt()
     } else lastDiffs.last._1
   }
